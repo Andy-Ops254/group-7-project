@@ -15,7 +15,9 @@ class User(db.Model, SerializerMixin):
     joined_at = db.Column(db.DateTime, server_default=db.func.now())
 
     goals = db.relationship('Goal', back_populates='user')
-    supports = db.relationship("Supporter", back_populates="user", cascade="all, delete-orphan")
+    supporters = db.relationship("Supporter", back_populates="user", cascade="all, delete-orphan")
+
+    serialize_rules =('-goals.user', '-supporters.user')
 
     @validates('email')
     def validate_email(self, key,email):
@@ -39,8 +41,10 @@ class Goal(db.Model, SerializerMixin):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
     user = db.relationship('User', back_populates='goals')
-    progress_entries = db.relationship("Progress", back_populates="goal", cascade="all, delete-orphan")
+    progress = db.relationship("Progress", back_populates="goal", cascade="all, delete-orphan")
     supporters = db.relationship("Supporter", back_populates="goal", cascade="all, delete-orphan")
+
+    serialize_rules=('-user.goal', '-progress.goal', '-supporters.goal')
 
     def __repr__(self):
         return f"<Goal id={self.id}, title={self.title}, user_id={self.user_id}>"
@@ -57,7 +61,9 @@ class Progress(db.Model, SerializerMixin):
     status = db.Column(db.String(50), nullable=False)  
     note = db.Column(db.Text, nullable=True)  
 
-    goal = db.relationship("Goal", back_populates="progress_entries")
+    goal = db.relationship("Goal", back_populates="progress")
+
+    serialize_rules= ('-goal.progress',)
 
     def __repr__(self):
         return f"<Progress id={self.id}, goal_id={self.goal_id}, date={self.date}, status={self.status}>"
@@ -79,8 +85,10 @@ class Supporter(db.Model, SerializerMixin):
     message = db.Column(db.Text, nullable=True)    
     created_at = db.Column(db.DateTime, server_default=db.func.now())  
 
-    user = db.relationship("User", back_populates="supports")
+    user = db.relationship("User", back_populates="supporters")
     goal = db.relationship("Goal", back_populates="supporters")
+
+    serialize_rules= ('-user.supporter', ('goal.supporter'))
 
     def __repr__(self):
         return f"<Supporter id={self.id}, user_id={self.user_id}, goal_id={self.goal_id}, message={self.message}>"
