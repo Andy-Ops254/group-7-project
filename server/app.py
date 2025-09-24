@@ -36,8 +36,8 @@ def new_user():
     try:
         data = request.get_json()
         new_user = User(
-            name = request.json.get("name"),
-            email =request.json.get("email"),
+            name = data.get("name"),
+            email =data.get("email"),
             # joined_at =request.json.get("joined_at")
         )
         db.session.add(new_user)
@@ -90,9 +90,9 @@ def goals():
 def new_goal():
     data =request.get_json()
     new_user = User(
-        title = request.json.get("title"),
-        description = request.json.get("description"),
-        target_date = request.json.get("target_date")
+        title = data.get("title"),
+        description = data.get("description"),
+        target_date = data.get("target_date")
     )
     db.session.add(new_user)
     db.session.commit()
@@ -137,7 +137,18 @@ def progress():
             progress_dict = progress.to_dict(only=('id', 'date', 'status', 'note'))
             progress_list.append(progress_dict)
         return make_response(progress_list, 200)
-    # elif request.method=='POST':
+
+    elif request.method=='POST':
+        data = request.get_json()
+        new_progress = Progress(
+            goal_id = data.get("goal_id"),
+            status = data.get("status"),
+            date = data.get("date")
+        )
+        db.session.add(new_progress)
+        db.session.commit()
+        progress_dict = new_progress.to_dict()
+        return make_response(progress_dict, 201)
     #     data =request.get_json()
         
 
@@ -162,7 +173,7 @@ def progress_by_id(id):
     elif request.method == 'PATCH':
         if progress:
             for attr in request.json:
-                setattr(progress, attr, request.json[request])
+                setattr(progress, attr, request.json[attr])
             db.session.add('progress')
             db.session.commit()
             progress_dict = progress.to_dict()
@@ -173,8 +184,17 @@ def progress_by_id(id):
                 404
             )
 
-
-
+@app.route('/goals/<int:goal_id>/supporters', methods=['GET'])
+def list_goal_supporters(goal_id):
+        if Supporter:
+            supporters = Supporter.query.filter_by(goal_id=goal_id).all()
+            supporter_dict = [s.to_dict(rules=('-user', '-goal')) for s in supporters]
+            return make_response(supporter_dict, 200)
+        else:
+            return make_response(
+                {},
+                204
+            )
 
 
 
