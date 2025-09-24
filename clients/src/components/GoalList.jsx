@@ -1,4 +1,5 @@
 import App from './App'
+import GoalCard from './GoalCard'
 
 function GoalList({goalList}) {
 
@@ -7,15 +8,15 @@ function GoalList({goalList}) {
     return (
         <div>
             <h1>Mental Goals</h1>
-            <h2>Manifest your healing</h2>
+            <h2>"Every step counts toward your success"</h2>
             <div>
                 {goalList.map((goal) =>(
-                    key={goal.id}
+                    <GoalCard key={goal.id}
                     title ={goal.title}
                     description = {goal.description}
-                    created_at = {goal.created_at}
                     target_date ={goal.target_date}
-                    
+                    created_at = {goal.created_at}
+                    />
                 ))}
             </div>
         </div>

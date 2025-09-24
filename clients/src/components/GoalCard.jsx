@@ -4,12 +4,17 @@ function GoalCard({title, description, created_at, target_date}) {
     
     return (
         <div>
-            <h2>Begin your journey....</h2>
+            <h2>"Healing happens one step at a time"</h2>
             <div>
-                <h2> Title: {title}</h2>
-                <p>description: {description} </p>
-                <p>created_at: {created_at} </p>
-                <p> target_date: {target_date} </p>
+                <h3>{title}</h3>
+                <p>{description}</p>
+                <h4>Created:{created_at} </h4>
+                <h4> Target: {target_date} </h4>
+                <div>
+                    <button>Add message</button>
+                    <button>Delete</button>
+                    <button>Update</button>
+                </div>
 
             </div>
         </div>
