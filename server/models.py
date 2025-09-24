@@ -42,7 +42,7 @@ class Goal(db.Model, SerializerMixin):
 
     user = db.relationship('User', back_populates='goals')
     progress = db.relationship("Progress", back_populates="goal", cascade="all, delete-orphan")
-    supporters = db.relationship("Supporter", back_populates="goal", cascade="all, delete-orphan")
+    supporter = db.relationship("Supporter", back_populates="goal", cascade="all, delete-orphan")
 
     serialize_rules=('-user.goal', '-progress.goal', '-supporters.goal')
 
@@ -86,9 +86,9 @@ class Supporter(db.Model, SerializerMixin):
     created_at = db.Column(db.DateTime, server_default=db.func.now())  
 
     user = db.relationship("User", back_populates="supporters")
-    goal = db.relationship("Goal", back_populates="supporters")
+    goal = db.relationship("Goal", back_populates="supporter")
 
-    serialize_rules= ('-user.supporter', ('goal.supporter'))
+    serialize_rules= ('-user.supporters', '-goal.supporter')
 
     def __repr__(self):
         return f"<Supporter id={self.id}, user_id={self.user_id}, goal_id={self.goal_id}, message={self.message}>"
