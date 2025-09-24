@@ -48,24 +48,34 @@ def new_user():
 #raises an error when user is not created
     except ValueError as e:
             return make_response({"errors": [str(e)]}, 400)
+
     
-@app.route("/user/'<int:id>", methods=['DELETE'])
+@app.route("/user/'<int:id>", methods=['DELETE', 'PATCH'])
 def delete_user(id):
     user = User.query.filter_by(id=id).first()
-    if user:
-        db.session.delete(user)
-        db.session.commit()
-        response = make_response(
-            {"message": "User ahs been deleted!"},
-            200
-        )
-        return response
+    if request.method == 'DELETE':
+        if user:
+            db.session.delete(user)
+            db.session.commit()
+            response = make_response(
+                {"message": "User ahs been deleted!"},
+                200
+            )
+            return response
+
+    elif request.method =='PATCH':
+        if user:
+            for attr in request.json:
+                setattr(user, attr, request.json[attr])
+            db.session.add(user)
+            db.session.commit()
+            user_dict =User.to_dict()
+            return make_response(user_dict, 200)
     else:
-        response = make_response(
-            {"error": "User not"},
-            404
-        )
-        return response
+            response = make_response(
+                {"error": "User not"},
+                404
+            )
     
     #Goals routes
 @app.route('/goals')
