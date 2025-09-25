@@ -5,9 +5,17 @@ import { useState } from "react";
 function ProgressForm() {
     const [note, setNote] = useState("");
 
+    function handleSubmit(e) {
+        e.preventDefault(); //prevents page reload
+        console.log("Submitted note:", note);  
+        setNote("")  //clears the input field
+    }
+//then add a form submit handler
+
   return (
-    <form>
-      <input type="text" 
+    <form onSubmit={handleSubmit}>
+      <input
+      type="text" 
       placeholder="Log your progress..."
       value={note}
       onChange={(e) => setNote(e.target.value)} 
