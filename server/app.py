@@ -2,7 +2,7 @@ from flask import Flask, make_response, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_cors import CORS
- 
+
 from models import db, User, Goal, Progress, Supporter
 
 app = Flask(__name__)
@@ -45,11 +45,15 @@ def new_user():
         )
         db.session.add(new_user)
         db.session.commit()
-        user_dict = new_user.to_dict()
-        return make_response(user_dict, 201)
-    #raises an error when user is not created
-    except Exception as e:
-        return jsonify({"errors": [str(e)]}), 400
+        response_data = new_user.to_dict()
+        return make_response(response_data, 201)
+
+#raises an error when user is not created
+    except ValueError as e:
+            return make_response({"errors": [str(e)]}, 400)
+
+
+        
         
 @app.route("/user/'<int:id>", methods=['DELETE', 'PATCH'])
 def delete_user(id):
@@ -70,13 +74,14 @@ def delete_user(id):
                 setattr(user, attr, request.json[attr])
             db.session.add(user)
             db.session.commit()
-            user_dict =User.to_dict()
+            user_dict =user.to_dict()
             return make_response(user_dict, 200)
     else:
             response = make_response(
-                {"error": "User not"},
+                {"error": "User not found"},
                 404
             )
+        return response
     
     #Goals routes
 @app.route('/goals')
@@ -91,9 +96,10 @@ def goals_list():
 def new_goal():
     data =request.get_json()
     new_goal = Goal(
-        title = data.get("title"),
-        description = data.get("description"),
-        target_date = data.get("target_date")
+        title = request.json.get("title"),
+        description = request.json.get("description"),
+        target_date = request.json.get("target_date")
+
     )
     db.session.add(new_goal)
     db.session.commit()
@@ -185,6 +191,7 @@ def progress_by_id(id):
             for attr in request.json:
                 setattr(progress, attr, request.json[attr])
             db.session.add('progress')
+
             db.session.commit()
             progress_dict = progress.to_dict()
             return make_response(progress_dict, 200)
@@ -193,53 +200,61 @@ def progress_by_id(id):
                 {"error": "Progress doesn't exist!"},
                 404
             )
-
-    #SUpporter routes
-@app.route('/goals/<int:goal_id>/supporters', methods=['GET'])
-def list_goal_supporters(goal_id):
-    supporters = Supporter.query.filter_by(goal_id=goal_id).all()
-    if supporters:
-        supporter_dict = [s.to_dict(rules=('-user', '-goal')) for s in supporters]
-        return make_response(supporter_dict, 200)
-    else:
-        return make_response(
-            {},
-            204
-        )
+        
+@app.route('/support/<int:goal_id>', methods=['GET'])
+def list_support(goal_id):
+    Goal.query.get_or_404(goal_id)
+    supporters = Supporter.query.filter_by(goal_id=goal_id).order_by(Supporter.created_at.desc()).all()
+    response = {
+        "message": "Supporters fetched successfully",
+        "goal_id": goal_id,
+        "supporters": [s.to_dict() for s in supporters]
+    }
+    return make_response(jsonify(response), 200)
 
 #first i create a route to list all supporters for a given goal
 #then i ensure the goal exist
 #then i fetch all supporters linked to the goal from newest first
-#then  return supporter data as json
+#then  i build a general response dictonary with a message ,goal id and the suporters data
+#then wrap the response in make response
 
-@app.route('/api/goals/<int:goal_id>/support', methods=['POST'])
+@app.route('/support/<int:goal_id>', methods=['POST'])
 def add_support(goal_id):
-        Goal.query.get_or_404(goal_id)
-        data = request.get_json() or {}
-        user_id = data.get('user_id')
-        if not user_id:
-            return jsonify({"error":"user_id required"}), 400
-        user = User.query.get(user_id)
-        if not user:
-            return jsonify({"error":"user not found"}), 404
-        
-        supporter = Supporter(
-            user_id=user_id,
-            goal_id=goal_id,
-            message=data.get('message'),
-            
-        )
-        db.session.add(supporter)
-        db.session.commit()
-        return make_response(supporter.to_dict()), 201
-#then i create a rouute to add a supporter to a goal
+    Goal.query.get_or_404(goal_id)
+    data = request.get_json() or {}
+    user_id = data.get('user_id')
+    if not user_id:
+        return make_response(jsonify({"error": "user_id required"}), 400)
+    
+    user = User.query.get(user_id)
+    if not user:
+        return make_response(jsonify({"error": "user not found"}), 404)
+      
+    supporter = Supporter(
+        user_id=user_id,
+        goal_id=goal_id,
+        message=data.get('message')
+    )
+    db.session.add(supporter)
+    db.session.commit()
+
+    response = {
+        "message": "Supporter added successfully",
+        "supporter": supporter.to_dict()
+    }
+
+    return make_response(jsonify(response), 201)
+
+#then i create a route to add a supporter to a goal
 #ensure the goal exist
-#parse incoming json data
+#then get the json data from the request body
 #then extract user id 
 #then i ensure the user exists
 #then i create a new supporter record
 #then save supporter to database
-#then return created supporter 
+#then build a success response with a message and the newly created supporters data
+
+  
 
 if __name__ == "__main__":
     app.run(port=5555, debug=True)
