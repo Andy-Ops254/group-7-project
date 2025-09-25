@@ -9,17 +9,27 @@ function ProgressForm({ goalId, onAddProgress }) {
         e.preventDefault(); //prevents page reload
 
       const newProgress = {
-      goal_id: goalId, // link to goal
-      note: note, // the typed note
-      date: new Date().toISOString(), // current timestamp
+        goal_id: goalId, // link to goal
+        note: note, // the typed note
+        date: new Date().toISOString(), // current timestamp
     };
+    fetch("http://localhost:5555/progress", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(newProgress),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        onAddProgress(data);
           
         setNote("")  //clears the input field
-    }
+    });
+
+ }
 //then add a form submit handler
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} style={{ marginTop: "10px" }}>
       <input
       type="text" 
       placeholder="Log your progress..."
