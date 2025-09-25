@@ -1,6 +1,10 @@
 import React from 'react'
 
 function GoalCard({title, description, created_at, target_date}) {
+
+    function handleClick(e) {
+        
+    }
     
     return (
         <div>
@@ -12,7 +16,7 @@ function GoalCard({title, description, created_at, target_date}) {
                 <h4> Target: {target_date} </h4>
                 <div>
                     <button>Add message</button>
-                    <button>Delete</button>
+                    <button onClick={handleClick}>Delete</button>
                     <button>Update</button>
                 </div>
 
