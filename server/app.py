@@ -2,6 +2,7 @@ from flask import Flask, make_response, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_cors import CORS
+from datetime import datetime
 
 from models import db, User, Goal, Progress, Supporter
 
@@ -23,13 +24,16 @@ def index():
 #User routes
 @app.route('/users', methods = ['GET'])
 def users_list():
-    users =[u.to_dict() for u in User.query.all()]
-    return make_response(users, 200)
+    user_list=[]
+    for user in User.query.all():
+        user_dict = user.to_dict(only=('name', 'email'))
+        user_list.append(user_dict)
+    return make_response(user_dict, 200)
 
-@app.route('/users/<int:user_id>', methods=['GET'])
-def get_user(user_id):
-    user = User.query.get_or_404(user_id)
-    user_dict = user.to_dict()
+@app.route('/users/<int:id>', methods=['GET'])
+def get_user(id):
+    user = User.query.filter_by(id=id).first()
+    user_dict = user.to_dict(only=('name', 'email'))
     return make_response(user_dict, 200)
 
 
@@ -55,7 +59,7 @@ def new_user():
 
         
         
-@app.route("/user/'<int:id>", methods=['DELETE', 'PATCH'])
+@app.route("/users/<int:id>", methods=['DELETE', 'PATCH'])
 def delete_user(id):
     user = User.query.filter_by(id=id).first()
     if request.method == 'DELETE':
@@ -74,14 +78,14 @@ def delete_user(id):
                 setattr(user, attr, request.json[attr])
             db.session.add(user)
             db.session.commit()
-            user_dict =user.to_dict()
+            user_dict =user.to_dict(only=('name', 'email'))
             return make_response(user_dict, 200)
     else:
             response = make_response(
                 {"error": "User not found"},
                 404
             )
-        return response
+            return response
     
     #Goals routes
 @app.route('/goals')
@@ -95,16 +99,16 @@ def goals_list():
 @app.route('/goals', methods=['POST'])
 def new_goal():
     data =request.get_json()
+    date = datetime.fromisoformat(data.get("target_date"))
     new_goal = Goal(
-        title = request.json.get("title"),
-        description = request.json.get("description"),
-        target_date = request.json.get("target_date")
-
+        title = data.get("title"),
+        description = data.get("description"),
+        target_date = date
     )
     db.session.add(new_goal)
     db.session.commit()
-    goal_dict=new_goal.to_dict()
-    return make_response(goal_dict, 200)
+    goal_dict=new_goal.to_dict(only=('title', 'description', 'target_date'))
+    return make_response(goal_dict, 201)
 
 
 @app.route('/goals/<int:id>', methods=['DELETE', 'PATCH'])
@@ -128,7 +132,11 @@ def delete_goal(id):
     
     if request.method == 'PATCH':
         allowed_fields = ["title", "description", "target_date"]
+
         for attr, value in request.json.items():
+            if attr in ['target_date', 'created_at']:
+                value = datetime.fromisoformat(value)  # or use strptime()
+
             if attr in allowed_fields:
                 setattr(goal, attr, value)
 
@@ -143,37 +151,37 @@ def delete_goal(id):
 
 @app.route('/progress', methods=['GET', 'POST'])
 def progress_list():
+    if request.method=='GET':
+        progress_list= []
+        for progress in Progress.query.all():
+            progress_dict = progress.to_dict(only=('goal_id', 'date', 'status', 'note'))
+            progress_list.append(progress_dict)
+        return make_response(progress_list, 200)
+    elif request.method=='POST':
+        data = request.get_json()
+        date = datetime.fromisoformat(data.get("date"))
 
-    def progress():
-        if request.method=='GET':
-            progress_list= []
-            for progress in Progress.query.all():
-                progress_dict = progress.to_dict(only=('id', 'date', 'status', 'note'))
-                progress_list.append(progress_dict)
-            return make_response(progress_list, 200)
-
-        elif request.method=='POST':
-            data = request.get_json()
-            new_progress = Progress(
-                goal_id = data.get("goal_id"),
-                status = data.get("status"),
-                date = data.get("date")
-            )
-        db.session.add(new_progress)
-        db.session.commit()
-      
-        progress_dict=new_progress.to_dict()
-        return make_response(progress_dict, 201)
+        new_progress = Progress(
+            goal_id = data.get("goal_id"),
+            status = data.get("status"),
+            date = date,
+            note =data.get("note")
+        )
+    db.session.add(new_progress)
+    db.session.commit()
+    
+    progress_dict=new_progress.to_dict(only=('goal_id', 'status', 'date'))
+    return make_response(progress_dict, 201)
     
     #     data =request.get_json()
         
 
 @app.route('/progress/<int:id>', methods=['DELETE', 'PATCH'])
 def progress_by_id(id):
-    progress = Progress.query.filter_by(id=id).first()
+    progress_id = Progress.query.filter_by(id=id).first()
     if request.method == 'DELETE':
-        if progress:
-            db.session.delete(progress)
+        if progress_id:
+            db.session.delete(progress_id)
             db.session.commit()
             response = make_response(
                 {},
@@ -187,13 +195,13 @@ def progress_by_id(id):
             )
 
     elif request.method == 'PATCH':
-        if progress:
+        if progress_id:
             for attr in request.json:
-                setattr(progress, attr, request.json[attr])
-            db.session.add('progress')
+                setattr(progress_id, attr, request.json[attr])
+            # db.session.add('progress_id')
 
             db.session.commit()
-            progress_dict = progress.to_dict()
+            progress_dict = progress_id.to_dict(only=('goal_id', 'date', 'status', 'note'))
             return make_response(progress_dict, 200)
         else:
             return make_response(
@@ -208,9 +216,9 @@ def list_support(goal_id):
     response = {
         "message": "Supporters fetched successfully",
         "goal_id": goal_id,
-        "supporters": [s.to_dict() for s in supporters]
+        "supporters": [s.to_dict(only=('user_id' ,'goal_id', 'message','created_at')) for s in supporters]
     }
-    return make_response(jsonify(response), 200)
+    return make_response(response, 200)
 
 #first i create a route to list all supporters for a given goal
 #then i ensure the goal exist
@@ -218,33 +226,22 @@ def list_support(goal_id):
 #then  i build a general response dictonary with a message ,goal id and the suporters data
 #then wrap the response in make response
 
-@app.route('/support/<int:goal_id>', methods=['POST'])
-def add_support(goal_id):
-    Goal.query.get_or_404(goal_id)
-    data = request.get_json() or {}
-    user_id = data.get('user_id')
-    if not user_id:
-        return make_response(jsonify({"error": "user_id required"}), 400)
-    
-    user = User.query.get(user_id)
-    if not user:
-        return make_response(jsonify({"error": "user not found"}), 404)
-      
+
+
+@app.route('/support', methods=['POST'])
+def add_support():
+    data = request.get_json()
+
     supporter = Supporter(
-        user_id=user_id,
-        goal_id=goal_id,
+        user_id=data.get('user_id'),
+        goal_id=data.get('goal_id'),
         message=data.get('message')
     )
     db.session.add(supporter)
     db.session.commit()
 
-    response = {
-        "message": "Supporter added successfully",
-        "supporter": supporter.to_dict()
-    }
-
-    return make_response(jsonify(response), 201)
-
+    supporter_dict = supporter.to_dict(only=('user_id' ,'goal_id', 'message'))
+    return make_response(supporter_dict, 201)
 #then i create a route to add a supporter to a goal
 #ensure the goal exist
 #then get the json data from the request body
