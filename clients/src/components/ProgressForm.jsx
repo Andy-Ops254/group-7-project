@@ -2,12 +2,18 @@ import { useState } from "react";
 
 //import usestate to keep track of input value
 
-function ProgressForm() {
+function ProgressForm({ goalId, onAddProgress }) {
     const [note, setNote] = useState("");
 
     function handleSubmit(e) {
         e.preventDefault(); //prevents page reload
-        console.log("Submitted note:", note);  
+
+      const newProgress = {
+      goal_id: goalId, // link to goal
+      note: note, // the typed note
+      date: new Date().toISOString(), // current timestamp
+    };
+          
         setNote("")  //clears the input field
     }
 //then add a form submit handler
