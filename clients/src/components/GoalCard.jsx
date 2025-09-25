@@ -1,6 +1,7 @@
 import React from 'react'
+import ProgressForm from "./ProgressForm";
 
-function GoalCard({title, description, created_at, target_date}) {
+function GoalCard({id ,title, description, created_at, target_date}) {
     
     return (
         <div>
@@ -15,6 +16,7 @@ function GoalCard({title, description, created_at, target_date}) {
                     <button>Delete</button>
                     <button>Update</button>
                 </div>
+                <ProgressForm goalId={id} onAddProgress={onAddProgress} />
 
             </div>
         </div>
