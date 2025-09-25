@@ -24,12 +24,14 @@ def index():
 @app.route('/users', methods = ['GET'])
 def users_list():
     users =[u.to_dict() for u in User.query.all()]
-    return make_response(users), 200
+    return make_response(users, 200)
 
 @app.route('/users/<int:user_id>', methods=['GET'])
 def get_user(user_id):
     user = User.query.get_or_404(user_id)
-    return make_response(user.to_dict()), 200
+    user_dict = user.to_dict()
+    return make_response(user_dict, 200)
+
 
     
 @app.route("/users", methods=['POST'])
@@ -43,7 +45,8 @@ def new_user():
         )
         db.session.add(new_user)
         db.session.commit()
-        return make_response(new_user.to_dict()), 201
+        user_dict = new_user.to_dict()
+        return make_response(user_dict, 201)
     #raises an error when user is not created
     except Exception as e:
         return jsonify({"errors": [str(e)]}), 400
@@ -82,20 +85,20 @@ def goals_list():
     for goal in Goal.query.all():
         goal_dict = goal.to_dict(only=('id', 'title', 'description', 'created_at', 'target_date'))
         goals.append(goal_dict)
-    return jsonify(goals), 200
+    return make_response(goals, 200)
 
 @app.route('/goals', methods=['POST'])
 def new_goal():
     data =request.get_json()
     new_goal = Goal(
-    new_user = User(
         title = data.get("title"),
         description = data.get("description"),
         target_date = data.get("target_date")
     )
     db.session.add(new_goal)
     db.session.commit()
-    return jsonify(new_goal.to_dict()), 201
+    goal_dict=new_goal.to_dict()
+    return make_response(goal_dict, 200)
 
 
 @app.route('/goals/<int:id>', methods=['DELETE', 'PATCH'])
@@ -118,46 +121,43 @@ def delete_goal(id):
             )
     
     if request.method == 'PATCH':
-         allowed_fields = ["title", "description", "target_date"]
-         for attr, value in request.json.items():
-           if attr in allowed_fields:
-              setattr(goal, attr, value)
+        allowed_fields = ["title", "description", "target_date"]
+        for attr, value in request.json.items():
+            if attr in allowed_fields:
+                setattr(goal, attr, value)
 
         
-         db.session.add(goal)
-         db.session.commit()
-         goal_dict = goal.to_dict()
-         return make_response(goal_dict, 200)
+        db.session.add(goal)
+        db.session.commit()
+        goal_dict = goal.to_dict()
+        return make_response(goal_dict, 200)
     
 
 #Progress routes
 
 @app.route('/progress', methods=['GET', 'POST'])
 def progress_list():
-    if request.method == 'GET':
-        progress_list = [p.to_dict() for p in Progress.query.all()]
-        return make_response(progress_list), 200
-    
-    if request.method == 'POST':
-def progress():
-    if request.method=='GET':
-        progress_list= []
-        for progress in Progress.query.all():
-            progress_dict = progress.to_dict(only=('id', 'date', 'status', 'note'))
-            progress_list.append(progress_dict)
-        return make_response(progress_list, 200)
 
-    elif request.method=='POST':
-        data = request.get_json()
-        new_progress = Progress(
-            goal_id = data.get("goal_id"),
-            status = data.get("status"),
-            date = data.get("date")
-        )
+    def progress():
+        if request.method=='GET':
+            progress_list= []
+            for progress in Progress.query.all():
+                progress_dict = progress.to_dict(only=('id', 'date', 'status', 'note'))
+                progress_list.append(progress_dict)
+            return make_response(progress_list, 200)
+
+        elif request.method=='POST':
+            data = request.get_json()
+            new_progress = Progress(
+                goal_id = data.get("goal_id"),
+                status = data.get("status"),
+                date = data.get("date")
+            )
         db.session.add(new_progress)
         db.session.commit()
       
-        return make_response(new_progress.to_dict()), 201
+        progress_dict=new_progress.to_dict()
+        return make_response(progress_dict, 201)
     
     #     data =request.get_json()
         
@@ -194,37 +194,18 @@ def progress_by_id(id):
                 404
             )
 
-      #get routes
+    #SUpporter routes
 @app.route('/goals/<int:goal_id>/supporters', methods=['GET'])
 def list_goal_supporters(goal_id):
-        if Supporter:
-            supporters = Supporter.query.filter_by(goal_id=goal_id).all()
-            supporter_dict = [s.to_dict(rules=('-user', '-goal')) for s in supporters]
-            return make_response(supporter_dict, 200)
-        else:
-            return make_response(
-                {},
-                204
-            )
-
-   if request.method == 'PATCH':
-        allowed_fields = ["status", "date"]
-        for attr, value in request.json.items():
-            if attr in allowed_fields:
-                setattr(progress, attr, value)
-
-        if hasattr(progress, "status") and progress.status not in ["on track", "missed", "completed"]:
-            return jsonify({"error": "Invalid status"}), 400 
-        
-        db.session.commit()
-        return make_response(progress.to_dict()), 200 
-   
-
-@app.route('/api/goals/<int:goal_id>/support', methods=['GET'])
-def list_support(goal_id):
-        Goal.query.get_or_404(goal_id)
-        supporters = Supporter.query.filter_by(goal_id=goal_id).order_by(Supporter.created_at.desc()).all()
-        return make_response([s.to_dict() for s in supporters]), 200
+    supporters = Supporter.query.filter_by(goal_id=goal_id).all()
+    if supporters:
+        supporter_dict = [s.to_dict(rules=('-user', '-goal')) for s in supporters]
+        return make_response(supporter_dict, 200)
+    else:
+        return make_response(
+            {},
+            204
+        )
 
 #first i create a route to list all supporters for a given goal
 #then i ensure the goal exist
