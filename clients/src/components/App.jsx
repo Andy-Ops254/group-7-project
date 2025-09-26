@@ -3,6 +3,8 @@ import {useState, useEffect} from 'react'
 import Navbar from "./Navbar";
 import GoalList from "./GoalList";
 import GoalForm from "./GoalForm";
+import ProgressForm from "./ProgressForm";
+import LandingPage from "./LandingPage";
 
 
 function App() {
@@ -75,8 +77,10 @@ function App() {
     return (
     <>
         <Navbar />
+        <LandingPage />
         <GoalList goalList={goalList} onDelete={handleDelete} onUpdate={handleUpdateGoal}/>
         <GoalForm  />
+
     
     </>
     );

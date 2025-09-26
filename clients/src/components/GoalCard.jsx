@@ -1,10 +1,8 @@
 import React from 'react'
+import{useState} from 'react'
+import App from './App'
 import ProgressForm from "./ProgressForm";
 
-function GoalCard({id ,title, description, created_at, target_date}) {
-
-import App from './App'
-import {useState} from 'react'
 
 function GoalCard({title, description, created_at, target_date, id, onDelete, onUpdate}) {
 
@@ -14,6 +12,8 @@ function GoalCard({title, description, created_at, target_date, id, onDelete, on
         description: description,
         target_date: target_date,
     })
+    const [expanded, setExpanded]= useState(false)
+    const [progress, setProgress] = useState([])
 
 
     function handleClick() {
@@ -24,6 +24,14 @@ function GoalCard({title, description, created_at, target_date, id, onDelete, on
     function toggleEdit() {
         setEditing(!editing)
         
+    }
+
+    function showProgress() {
+        console.log("finya")
+        fetch(`http://127.0.0.1:5555/goals/${id}/progress`)
+        .then(res => res.json())
+        .then(data => setProgress(data))
+                setExpanded(!expanded)
     }
 
     
@@ -80,12 +88,28 @@ function GoalCard({title, description, created_at, target_date, id, onDelete, on
                     {/* <button>Add message</button> */}
                     <button onClick={handleClick}>Delete</button>
                     <button onClick = {toggleEdit}>Update</button>
+                    <button onClick= {showProgress}>show progress</button>
                 </div>
-                <ProgressForm goalId={id} onAddProgress={onAddProgress} />
+                {/* <ProgressForm goalId={id} onAddProgress={onAddProgress} /> */}
 
             </div>
         </div>
         }
+
+
+        { expanded &&
+        <div>
+            <ProgressForm/>
+            <h3>Progress History</h3>
+                <div>
+                    <p>status:{progress.status}</p>
+                    <p>note : {progress.note}</p>
+                    <p>date:{progress.date}</p>
+                </div>
+        
+        </div>
+        }
+
         </>
     )
 }

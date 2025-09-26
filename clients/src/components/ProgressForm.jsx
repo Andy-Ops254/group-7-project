@@ -1,4 +1,4 @@
-import { useState } from "react";
+import {useState} from "react";
 
 //import usestate to keep track of input value
 
@@ -36,7 +36,8 @@ function ProgressForm({ goalId, onAddProgress }) {
       value={note}
       onChange={(e) => setNote(e.target.value)} 
       />
-      <button type="submit">Add</button>
+      <button type="submit">Add progress</button>
+
     </form>
   );
 }
