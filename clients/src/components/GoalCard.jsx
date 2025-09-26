@@ -1,9 +1,11 @@
 import React from 'react'
+import App from './App'
 
-function GoalCard({title, description, created_at, target_date}) {
+function GoalCard({title, description, created_at, target_date, id, onDelete}) {
 
-    function handleClick(e) {
-        
+    function handleClick() {
+        console.log('Finyaa'),
+        onDelete(id)
     }
     
     return (
