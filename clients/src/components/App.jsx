@@ -38,10 +38,44 @@ function App() {
         console.error('Delete failed:', error);
     });
     }
+
+    //update goal 
+    
+    function handleUpdateGoal(id, updatedData) {
+        console.log(updatedData)
+    fetch(`http://127.0.0.1:5555/goals/${id}`, {
+        method: 'PATCH', 
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    body: JSON.stringify({
+        title :updatedData.title,
+        description: updatedData.description,
+        target_date : updatedData.target_date
+        //specifiesd the fields i want to update
+    }),
+    })
+    .then(res => {
+        if (!res.ok) 
+        throw new Error('Update failed');
+    return res.json();
+    })
+
+    .then(updatedGoal => {
+    console.log(updatedGoal)
+    setgoalList(goalList.map(goal =>
+        goal.id === id ? updatedGoal : goal
+    ));
+    })
+    .catch(error => {
+    console.error('Update failed:', error);
+    });
+}
+
     return (
     <>
         <Navbar />
-        <GoalList goalList={goalList} onDelete={handleDelete} />
+        <GoalList goalList={goalList} onDelete={handleDelete} onUpdate={handleUpdateGoal}/>
         <GoalForm  />
     
     </>

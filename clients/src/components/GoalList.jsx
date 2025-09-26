@@ -1,7 +1,7 @@
 import App from './App'
 import GoalCard from './GoalCard'
 
-function GoalList({goalList, onDelete}) {
+function GoalList({goalList, onDelete,onUpdate}) {
 
 
 
@@ -18,6 +18,7 @@ function GoalList({goalList, onDelete}) {
                     created_at = {goal.created_at}
                     id = {goal.id}
                     onDelete= {onDelete}
+                    onUpdate={onUpdate}
                     />
                 ))}
             </div>
