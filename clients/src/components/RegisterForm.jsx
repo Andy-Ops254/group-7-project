@@ -1,6 +1,7 @@
 import React from 'react'
 import {useState} from 'react'
 import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom'
 
 
 function RegisterForm() {
@@ -72,6 +73,9 @@ function RegisterForm() {
             />
             <button type='submit'>Create Account</button>
         </form>
+        <p>
+        Already have an Account? <Link to="/login">Log In here</Link>
+    </p>
     </div>
   )
 }

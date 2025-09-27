@@ -1,6 +1,7 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom';
 import {useState} from 'react'
+import { Link } from 'react-router-dom'
 
 
 function LogInForm() {
@@ -22,7 +23,7 @@ function LogInForm() {
   const logInData = {
     ...logData
   }
-  console.log(logData)
+  // console.log(logData)
 
   function handleSubmit(e) {
     e.preventDefault()
@@ -61,6 +62,13 @@ function LogInForm() {
   }
   return (
     <div>
+      <h1>Welcome to the Mental Wellness App</h1>
+      <p>
+        Track your goals, log progress, and get support from others on your
+        wellness journey.
+      </p>
+
+      {/* login form */}
       <form onSubmit={handleSubmit}>
         <input
         name= 'name'
@@ -79,6 +87,11 @@ function LogInForm() {
         <button type='submit'>Log In</button>
 
       </form>
+
+      <p>
+        Don't have an account? <Link to="/register">Register here</Link>
+      </p>
+
     </div>
   )
 }

@@ -1,12 +1,12 @@
-import { Route } from "react-router";
+// import { Route } from "react-router";
 import {useState, useEffect} from 'react'
+import { Routes, Route } from 'react-router-dom';
 import Navbar from "./Navbar";
 import GoalList from "./GoalList";
 import GoalForm from "./GoalForm";
-import ProgressForm from "./ProgressForm";
-import LandingPage from "./LandingPage";
 import LogInForm from "./LogInForm";
 import RegisterForm from "./RegisterForm";
+
 
 
 function App() {
@@ -79,11 +79,12 @@ function App() {
     return (
     <>
         <Navbar />
-        <RegisterForm/>
-        <LogInForm/>
-        {/* <LandingPage /> */}
-        <GoalList goalList={goalList} onDelete={handleDelete} onUpdate={handleUpdateGoal}/>
-        <GoalForm  />
+        <Routes>
+            <Route path = '/' element={<LogInForm/>} />
+            <Route path = '/register' element={<RegisterForm/>} />
+            <Route path="/home" element={<GoalList goalList={goalList} onDelete={handleDelete} onUpdate={handleUpdateGoal}/>} />
+            <Route path = "/goalform" element={<GoalForm  />} />
+        </Routes>
 
     
     </>

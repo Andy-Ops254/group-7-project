@@ -9,9 +9,9 @@ function Navbar() {
         <h1>MENTAL WELLNESS</h1>
         </div>
         <nav>
-            <Link to="/">Home</Link>
-            <Link to="/login">LogIn</Link>
-            <Link to="/community">Community</Link>
+            <Link to="/">LogIn</Link>
+            <Link to="/home">Home</Link>
+            <Link to="/goalform">Create goal</Link>
         </nav>
     </header>
     )
