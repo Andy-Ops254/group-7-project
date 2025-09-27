@@ -6,6 +6,7 @@ from datetime import datetime
 
 from models import db, User, Goal, Progress, Supporter
 
+
 app = Flask(__name__)
 
 
@@ -135,7 +136,7 @@ def delete_goal(id):
 
         for attr, value in request.json.items():
             if attr in ['target_date', 'created_at']:
-                value = datetime.fromisoformat(value)  # or use strptime()
+                value = datetime.fromisoformat(value) 
 
             if attr in allowed_fields:
                 setattr(goal, attr, value)
@@ -143,7 +144,7 @@ def delete_goal(id):
         
         db.session.add(goal)
         db.session.commit()
-        goal_dict = goal.to_dict()
+        goal_dict = goal.to_dict(only=('id','title', 'description', 'target_date', 'created_at'))
         return make_response(goal_dict, 200)
     
 
@@ -176,7 +177,7 @@ def progress_list():
     #     data =request.get_json()
         
 
-@app.route('/progress/<int:id>', methods=['DELETE', 'PATCH'])
+@app.route('/progress/<int:id>', methods=['DELETE', 'PATCH', 'GET'])
 def progress_by_id(id):
     progress_id = Progress.query.filter_by(id=id).first()
     if request.method == 'DELETE':
@@ -208,7 +209,21 @@ def progress_by_id(id):
                 {"error": "Progress doesn't exist!"},
                 404
             )
-        
+
+    elif request.method=='GET':
+        if progress_id:
+            progress_dict = {
+                'status': progress_id.status,
+                'note' : progress_id.note
+            }
+            return make_response(progress_dict, 200)
+        else:
+            return make_response(
+                {"error": "Progress doesn't exist!"},
+                404
+            )
+
+
 @app.route('/support/<int:goal_id>', methods=['GET'])
 def list_support(goal_id):
     Goal.query.get_or_404(goal_id)
