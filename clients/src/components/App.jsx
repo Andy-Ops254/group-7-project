@@ -1,4 +1,4 @@
-import { Route } from "react-router";
+import { Routes, Route } from "react-router-dom";
 import {useState, useEffect} from 'react'
 import Navbar from "./Navbar";
 import GoalList from "./GoalList";
