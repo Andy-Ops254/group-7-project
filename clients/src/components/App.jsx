@@ -3,7 +3,7 @@ import {useState, useEffect} from 'react'
 import Navbar from "./Navbar";
 import GoalList from "./GoalList";
 import GoalForm from "./GoalForm";
-
+import LogInForm from "./LogInForm";
 
 function App() {
     //display in app, 
@@ -77,6 +77,7 @@ function App() {
         <Navbar />
         <GoalList goalList={goalList} onDelete={handleDelete} onUpdate={handleUpdateGoal}/>
         <GoalForm  />
+        <LogInForm />
     
     </>
     );
