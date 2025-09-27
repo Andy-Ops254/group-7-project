@@ -32,6 +32,7 @@ function LogInForm() {
       headers: {
         "Content-Type": "application/json"
       },
+      credentials: `include`,
       body: JSON.stringify(logInData)
     })
     .then(res => {

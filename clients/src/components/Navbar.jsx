@@ -12,6 +12,8 @@ function Navbar() {
             <Link to="/">LogIn</Link>
             <Link to="/home">Home</Link>
             <Link to="/goalform">Create goal</Link>
+            <Link to="/logout">Log out</Link>
+
         </nav>
     </header>
     )

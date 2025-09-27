@@ -12,6 +12,8 @@ import RegisterForm from "./RegisterForm";
 function App() {
     //display in app, 
     const[goalList, setgoalList] =useState([])
+    const [user, setUser] = useState(null);
+
 
 
     useEffect (() =>{
@@ -19,6 +21,27 @@ function App() {
         .then(res => res.json())
         .then(response => setgoalList(response))
     },[])
+
+    //stay logged in
+    useEffect(() => {
+    fetch('http://127.0.0.1:5555/check_session', {
+    credentials: 'include'
+    })
+    .then(res => {
+        if (res.ok) return res.json();
+        throw new Error();
+    })
+    .then(user => setUser(user))
+    .catch(() => setUser(null));
+}, []);
+
+//logout user
+fetch('http://127.0.0.1:5555/logout', {
+method: 'DELETE',
+    credentials: 'include'
+})
+.then(() => setUser(null))
+
 
     //deletes the goals using iud
     function handleDelete(id) {
