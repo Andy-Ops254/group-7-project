@@ -28,15 +28,22 @@ function RegisterForm() {
     body: JSON.stringify(registerData)
     })
     .then(res => {
+        console.log("success",res.status)
+        if(res.status===200){
+            navigate('/login')
+            setRegister({
+        'name': '',
+        'email': ''
+    })
+        }
+        if(!res.ok) {
+            throw new Error("Invalid login");
+    }
     return res.json()
     })
     .then(response =>{
     console.log('seccess' ,response)
-    navigate('/login')
-    setRegister({
-        'name': '',
-        'email': ''
-    })
+    
     })
     //my catch error
     .catch(err => {

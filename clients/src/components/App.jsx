@@ -6,6 +6,7 @@ import GoalForm from "./GoalForm";
 import ProgressForm from "./ProgressForm";
 import LandingPage from "./LandingPage";
 import LogInForm from "./LogInForm";
+import RegisterForm from "./RegisterForm";
 
 
 function App() {
@@ -78,6 +79,7 @@ function App() {
     return (
     <>
         <Navbar />
+        <RegisterForm/>
         <LogInForm/>
         {/* <LandingPage /> */}
         <GoalList goalList={goalList} onDelete={handleDelete} onUpdate={handleUpdateGoal}/>

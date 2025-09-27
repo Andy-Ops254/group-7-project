@@ -36,7 +36,7 @@ function LogInForm() {
     .then(res => {
       console.log("Show me the response, res.status")
       if (res.status=== 404) {
-    // User not found → redirect to register
+    // User not found
     navigate("/register");
     return;
       }
