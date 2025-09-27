@@ -14,13 +14,36 @@ function LogInForm() {
   function handleChange(e){
     const { name, value } = e.target;
     setLogData({ ...logData, [name]: value });
-    
+
   }
 
 
   return (
     <div>
-      <p>works</p>
+      <form>
+        <input
+        name ="name"
+        type="text"
+        placeholder="Name"
+        value={logData.name}
+        onChange ={handleChange}
+        />
+        {/*username input*/}
+
+        <input
+        name ="email"
+        type ="text"
+        placeholder="Email"
+        value={logData.email}
+        onChange={handleChange}
+        />
+        {/*email input*/}
+
+        <button type="submit">Log In</button>
+        {/*submit button*/}
+
+
+      </form>
     </div>
   );
 }
