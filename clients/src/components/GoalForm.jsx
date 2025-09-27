@@ -13,7 +13,7 @@ function GoalForm() {
         const {name, value} = e.target
         setFormData({...formData, [name]:value})
     }
-        console.log("sioni shit")
+        // console.log("sioni shit")
 
         
     function handleSubmit(e) {

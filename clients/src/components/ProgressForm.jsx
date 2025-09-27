@@ -1,40 +1,67 @@
 import {useState} from "react";
+import GoalCard from "./GoalCard";
 
 //import usestate to keep track of input value
 
-function ProgressForm({ goalId, onAddProgress }) {
-    const [note, setNote] = useState("");
+function ProgressForm({goalId}) {
+  const[progress, setProgress] = useState({
+    "status": "",
+    "note": "",
+    "date": ""
+  })
 
-    function handleSubmit(e) {
-        e.preventDefault(); //prevents page reload
+// on changeeventhandler
+  function handleChange(e){
+    const{name, value}= e.target
+    setProgress({...progress, [name]:value})
+  }
+  //creating progress data including goal id
 
-      const newProgress = {
-        goal_id: goalId, // link to goal
-        note: note, // the typed note
-        date: new Date().toISOString(), // current timestamp
-    };
-    fetch("http://localhost:5555/progress", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(newProgress),
+  const progressData = {
+    ...progress,
+    goal_id : goalId,
+    date: new Date().toISOString().split('T')[0]
+  }
+  //submit handles the fetch and clears forms
+  function handleSubmit(e) {
+    e.preventDefault()
+    fetch('http://127.0.0.1:5555/progress', {
+      method : "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(progressData)
     })
-      .then((res) => res.json())
-      .then((data) => {
-        onAddProgress(data);
-          
-        setNote("")  //clears the input field
+    .then(res => res.json())
+    .then(data => {
+      setProgress({
+        'status': "",
+        "date": "",
+        "note":""
+      })
+    })
+    .catch(error => {
+      console.error('Error:', error);
     });
-
- }
+  }
 //then add a form submit handler
 
   return (
-    <form onSubmit={handleSubmit} style={{ marginTop: "10px" }}>
+    <form onSubmit={handleSubmit}>
       <input
       type="text" 
+      name="note"
       placeholder="Log your progress..."
-      value={note}
-      onChange={(e) => setNote(e.target.value)} 
+      value={progress.note}
+      onChange={handleChange}
+      />
+
+      <input
+      type = "text"
+      name="status"
+      placeholder="Status"
+      value ={progress.status}
+      onChange ={handleChange}
       />
       <button type="submit">Add progress</button>
 

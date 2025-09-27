@@ -11,6 +11,7 @@ function GoalCard({title, description, created_at, target_date, id, onDelete, on
         title:title,
         description: description,
         target_date: target_date,
+        
     })
     const [expanded, setExpanded]= useState(false)
     const [progress, setProgress] = useState([])
@@ -30,8 +31,11 @@ function GoalCard({title, description, created_at, target_date, id, onDelete, on
         console.log("finya")
         fetch(`http://127.0.0.1:5555/goals/${id}/progress`)
         .then(res => res.json())
-        .then(data => setProgress(data))
-                setExpanded(!expanded)
+        .then(data => {
+            console.log('imewez')
+            setProgress(data)
+            setExpanded(!expanded)
+        })
     }
 
     
@@ -99,13 +103,15 @@ function GoalCard({title, description, created_at, target_date, id, onDelete, on
 
         { expanded &&
         <div>
-            <ProgressForm/>
+            <ProgressForm goalId={id}/>
             <h3>Progress History</h3>
-                <div>
-                    <p>status:{progress.status}</p>
-                    <p>note : {progress.note}</p>
-                    <p>date:{progress.date}</p>
-                </div>
+            {progress.map((progressItem) => (
+    <div key={progressItem.id}>
+        <p>Status: {progressItem.status}</p>
+        <p>Note: {progressItem.note}</p>
+        <p>Date: {progressItem.date}</p>
+    </div>
+))}
         
         </div>
         }
