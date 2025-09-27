@@ -4,11 +4,8 @@ import GoalCard from "./GoalCard";
 //import usestate to keep track of input value
 
 function ProgressForm({goalId}) {
-  const[progress, setProgress] = useState({
-    "status": "",
-    "note": "",
-    "date": ""
-  })
+  const[progress, setProgress] = useState([])
+  
 
 // on changeeventhandler
   function handleChange(e){
@@ -34,6 +31,10 @@ function ProgressForm({goalId}) {
     })
     .then(res => res.json())
     .then(data => {
+      console.log("Progress data from backend:", progress);
+
+          console.log("API response:", data);
+
       setProgress({
         'status': "",
         "date": "",
@@ -48,24 +49,52 @@ function ProgressForm({goalId}) {
 
   return (
     <form onSubmit={handleSubmit}>
-      <input
-      type="text" 
-      name="note"
-      placeholder="Log your progress..."
-      value={progress.note}
-      onChange={handleChange}
-      />
+  <input
+    type="text"
+    name="note"
+    placeholder="Log your progress..."
+    value={progress.note}
+    onChange={handleChange}
+  />
 
-      <input
-      type = "text"
+  <p>Status:</p>
+
+  <label>
+    <input
+      type="radio"
       name="status"
-      placeholder="Status"
-      value ={progress.status}
-      onChange ={handleChange}
-      />
-      <button type="submit">Add progress</button>
+      value="complete"
+      checked={progress.status === "complete"}
+      onChange={handleChange}
+    />
+    Complete
+  </label>
 
-    </form>
+  <label>
+    <input
+      type="radio"
+      name="status"
+      value="incomplete"
+      checked={progress.status === "incomplete"}
+      onChange={handleChange}
+    />
+    Incomplete
+  </label>
+
+  <label>
+    <input
+      type="radio"
+      name="status"
+      value="in progress"
+      checked={progress.status === "in progress"}
+      onChange={handleChange}
+    />
+    In Progress
+  </label>
+
+  <button type="submit">Add Progress</button>
+</form>
+
   );
 }
 

@@ -32,7 +32,7 @@ function GoalCard({title, description, created_at, target_date, id, onDelete, on
         fetch(`http://127.0.0.1:5555/goals/${id}/progress`)
         .then(res => res.json())
         .then(data => {
-            console.log('imewez')
+            console.log(data)
             setProgress(data)
             setExpanded(!expanded)
         })
@@ -105,13 +105,22 @@ function GoalCard({title, description, created_at, target_date, id, onDelete, on
         <div>
             <ProgressForm goalId={id}/>
             <h3>Progress History</h3>
-            {progress.map((progressItem) => (
-    <div key={progressItem.id}>
-        <p>Status: {progressItem.status}</p>
-        <p>Note: {progressItem.note}</p>
-        <p>Date: {progressItem.date}</p>
-    </div>
-))}
+            {progress.map((progressItem) => {
+        return (<div key={progressItem.id}>
+            <p>Status: {progressItem?.status}</p>
+            <p>Note: {progressItem?.note}</p>
+            <p>Date: {progressItem?.date}</p>
+        </div>)
+    })}
+
+    
+        {/* <div>
+            nullish coalesing 
+            <p>Status: {progress?.status}</p>
+            <p>Note: {progress?.note}</p>
+            <p>Date: {progress?.date}</p>
+        </div>
+     */}
         
         </div>
         }
