@@ -42,8 +42,8 @@ function GoalCard({title, description, created_at, target_date, id, onDelete, on
     return (
         <>
         { editing &&
-        <div>
-            <h2>"Healing happens one step at a time"</h2>
+        <div className="goal-card edit">
+            <h2 className="goal-quote">"Healing happens one step at a time"</h2>
             <form onSubmit={(e) => {
                 e.preventDefault()
                 onUpdate(id,{
@@ -74,25 +74,25 @@ function GoalCard({title, description, created_at, target_date, id, onDelete, on
                 placeholder='target_value'
                 onChange={(e) => setFormData({...formData,target_date:e.target.value})}
                 />
-                <button type="submit">Save</button>
+                <button type="submit" className="btn save-btn">Save</button>
             </form>
 
         </div>
         }
         
         { !editing && 
-        <div>
-            <h2>"Healing happens one step at a time"</h2>
-            <div>
+        <div className="goal-card">
+            <h2 className="goal-quote">"Healing happens one step at a time"</h2>
+            <div className="goal-content">
                 <h3>{title}</h3>
                 <p>{description}</p>
                 <h4>Created:{created_at} </h4>
                 <h4> Target: {target_date} </h4>
-                <div>
+                <div className="goal-buttons">
                     {/* <button>Add message</button> */}
-                    <button onClick={handleClick}>Delete</button>
-                    <button onClick = {toggleEdit}>Update</button>
-                    <button onClick= {showProgress}>show progress</button>
+                    <button  className="btn delete-btn" onClick={handleClick}>Delete</button>
+                    <button className="btn update-btn" onClick = {toggleEdit}>Update</button>
+                    <button className="btn progress-btn" onClick= {showProgress}>show progress</button>
                 </div>
                 {/* <ProgressForm goalId={id} onAddProgress={onAddProgress} /> */}
 
@@ -102,11 +102,11 @@ function GoalCard({title, description, created_at, target_date, id, onDelete, on
 
 
         { expanded &&
-        <div>
+        <div className="progress-section">
             <ProgressForm goalId={id}/>
             <h3>Progress History</h3>
             {progress.map((progressItem) => {
-        return (<div key={progressItem.id}>
+        return (<div key={progressItem.id} className="progress-item">
             <p>Status: {progressItem?.status}</p>
             <p>Note: {progressItem?.note}</p>
             <p>Date: {progressItem?.date}</p>

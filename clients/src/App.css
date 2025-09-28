@@ -1,0 +1,201 @@
+body {
+  margin: 0;
+  font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background-color: #f8f5fc;
+  color: #333;
+  line-height: 1.6;
+}
+
+
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+
+button,
+a {
+  cursor: pointer;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 18px;
+  font-size: 14px;
+  transition: background 0.3s ease;
+}
+
+button.primary,
+a.primary {
+  background-color: #a68ad5; 
+  color: white;
+}
+
+button.primary:hover,
+a.primary:hover {
+  background-color: #8f72c1; 
+}
+
+button.secondary {
+  background-color: #e6dbf5; 
+  color: #4a2c78;
+}
+
+button.secondary:hover {
+  background-color: #d4c4ef;
+}
+/* GoalCard styles */
+.goal-card {
+  background: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  padding: 20px;
+  margin: 20px 0;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+  transition: transform 0.2s ease;
+}
+
+.goal-card:hover {
+  transform: scale(1.01);
+}
+
+.goal-quote {
+  font-size: 1.2rem;
+  font-style: italic;
+  color: #555;
+  margin-bottom: 15px;
+}
+
+.goal-content h3 {
+  font-size: 1.4rem;
+  margin-bottom: 8px;
+}
+
+.goal-content p {
+  font-size: 1rem;
+  color: #444;
+  margin-bottom: 8px;
+}
+
+.goal-buttons {
+  margin-top: 15px;
+  display: flex;
+  gap: 10px;
+}
+
+.btn {
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background 0.2s ease;
+}
+
+.delete-btn {
+  background: #f44336;
+  color: white;
+}
+
+.delete-btn:hover {
+  background: #d32f2f;
+}
+
+.update-btn {
+  background: #2196f3;
+  color: white;
+}
+
+.update-btn:hover {
+  background: #1976d2;
+}
+
+.progress-btn {
+  background: #4caf50;
+  color: white;
+}
+
+.progress-btn:hover {
+  background: #388e3c;
+}
+
+.save-btn {
+  background: #ff9800;
+  color: white;
+}
+
+.save-btn:hover {
+  background: #f57c00;
+}
+
+.goal-form input {
+  display: block;
+  margin-bottom: 10px;
+  padding: 8px;
+  width: 100%;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.progress-section {
+  margin-top: 20px;
+  padding: 15px;
+  background: #fafafa;
+  border-left: 4px solid #4caf50;
+}
+
+.progress-item {
+  margin-bottom: 12px;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+/*---progress form atyles---*/
+.progress-form {
+background-color: #ffffff;
+border: 1px solid #d9c8f0; 
+border-radius : 8px;
+padding: 20px;
+margin-top: 15px;
+box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+
+.progress-form input[type="text"] {
+width: 100%;
+padding: 10px;
+margin-bottom: 15px;
+border: 1px solid #ccc;
+border-radius: 6px;
+font-size: 14px;
+}
+
+.progress-form p {
+font-weight: 600;
+margin-bottom: 8px;
+color: #4a2c78; 
+}
+
+.progress-form label {
+display: inline-flex;
+align-items: center;
+margin-right: 15px;
+font-size: 14px;
+color: #333;
+}
+
+.progress-form input[type="radio"] {
+margin-right: 6px;
+}
+
+.progress-form button {
+background-color: #a68ad5;
+color: white;
+border: none;
+border-radius: 6px;
+padding: 10px 18px;
+font-size: 14px;
+cursor: pointer;
+transition: background 0.3s ease;
+}
+
+.progress-form button:hover {
+background-color: #8f72c1;
+}
