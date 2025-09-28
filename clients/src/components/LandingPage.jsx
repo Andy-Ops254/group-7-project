@@ -5,7 +5,7 @@ import React from "react";
 function LandingPage() {
   return (
     <div style={{ textAlign: "center", padding: "40px" }}>
-      <h1>Welcome to the Mental Wellness App</h1>
+      <h1 style={{ color: "#6a4dad" }}>Welcome to the Mental Wellness App</h1>
       <p>
         Track your goals, log progress, and get support from others on your
         wellness journey.
