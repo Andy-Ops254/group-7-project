@@ -48,7 +48,7 @@ function ProgressForm({goalId}) {
 //then add a form submit handler
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form className="progress-form"  onSubmit={handleSubmit}>
   <input
     type="text"
     name="note"
