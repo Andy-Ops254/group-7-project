@@ -2,33 +2,35 @@ import React from "react";
 import { Link } from 'react-router-dom'
 
 
-
-
 function LandingPage() {
   return (
-    <div style={{ textAlign: "center", padding: "40px" }}>
-      <h1 style={{ color: "#6a4dad" }}>Welcome to the Mental Wellness App</h1>
-      <p>
+    <div className="landing-container">
+      <h1 className="landing-title">Welcome to the Mental Wellness App</h1>
+      <p className="landing-text">
         Track your goals, log progress, and get support from others on your
         wellness journey.
       </p>
 
+      <div className="landing-buttons">
+        <Link to="/login"className="primary-btn">
+        Log In
+        </Link>   
+        <Link to="/register" className="secondary-btn">
+        Sign Up
+        </Link>
+
       <div style={{ marginTop: "20px" }}>
-        <Link to="/login">LOG IN
-          style={{
-            marginRight: "20px",
-            padding: "10px 20px",
-            backgroundColor: "#4CAF50",
-            color: "white",
-            borderRadius: "5px",
-          }}
+        <Link to="/login" className="primary" style={{ marginRight: "20px" }}>
+        LOG IN
         </Link>
           
-<Link></Link>
+        <Link to="/register" className="secondary">
+        SIGN UP
+        </Link>
 
-        
-        
+
       </div>
+    </div>
     </div>
   );
 }

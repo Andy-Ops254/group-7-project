@@ -41,10 +41,10 @@ function GoalForm() {
 }
 
     return (
-        <>
-        <h2>"Turning dreams into achievements"</h2>
-        <form onSubmit={handleSubmit}>
-            <label>Title</label>
+        <div className="goal-form-container">
+        <h2 className="goal-form-title">✨Turning dreams into achievements✨</h2>
+        <form onSubmit={handleSubmit} className="goal-form">
+            <label className="goal-form-label">Title</label>
             <input 
             type="text" 
             name= "title"
@@ -53,7 +53,7 @@ function GoalForm() {
             placeholder='Title'
             
             />
-            <label>Description</label>
+            <label className="goal-form-label">Description</label>
             <input 
             type="text" 
             name= "description"
@@ -61,17 +61,19 @@ function GoalForm() {
             onChange ={handleChange}
             placeholder='description'
             />
-            <label>Target Date</label>
+            <label className="goal-form-label">Target Date</label>
             <input 
                 type="datetime-local" 
                 name="target_date"
                 value={formData.target_date}
                 onChange={handleChange}
                 placeholder="Select target date"
-/>
-            <input type="submit" />
+
+             />
+             <button type="submit" className="goal-form-button"> Add Goal</button>
+
         </form>
-        </>
+        </div>
     )
 }
 

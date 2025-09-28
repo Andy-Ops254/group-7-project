@@ -21,15 +21,15 @@ function Navbar({onLogout}) {
     });
 }
     return (
-    <header>
-        <div>
+    <header className="navbar">
+        <div className="navbar-logo">
         <h1>MENTAL WELLNESS</h1>
         </div>
-        <nav>
-            <Link to="/">LogIn</Link>
-            <Link to="/home">Home</Link>
-            <Link to="/goalform">Create goal</Link>
-            <button onClick={handleLogout}>Logout</button>
+        <nav className="navbar-links">
+            <Link className="nav-link" to="/">LogIn</Link>
+            <Link className="nav-link" to="/home">Home</Link>
+            <Link className="nav-link" to="/goalform">Create goal</Link>
+            <button className="logout-btn" onClick={handleLogout}>Logout</button>
         </nav>
     </header>
     )
