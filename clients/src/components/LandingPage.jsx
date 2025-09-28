@@ -1,4 +1,6 @@
 import React from "react";
+import { Link } from 'react-router-dom'
+
 
 
 
@@ -12,8 +14,7 @@ function LandingPage() {
       </p>
 
       <div style={{ marginTop: "20px" }}>
-        <a
-          href="/signup"
+        <Link to="/login">LOG IN
           style={{
             marginRight: "20px",
             padding: "10px 20px",
@@ -21,22 +22,12 @@ function LandingPage() {
             color: "white",
             borderRadius: "5px",
           }}
-        >
-          Sign Up
-        </a>
+        </Link>
+          
+<Link></Link>
 
-        <a
-          href="/login"
-          style={{
-            padding: "10px 20px",
-            backgroundColor: "#008CBA",
-            color: "white",
-            textDecoration: "none",
-            borderRadius: "5px",
-          }}
-        >
-          Log In
-        </a>
+        
+        
       </div>
     </div>
   );

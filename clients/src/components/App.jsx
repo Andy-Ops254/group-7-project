@@ -1,17 +1,21 @@
-import { Route } from "react-router";
+
+// import { Route } from "react-router";
+// import { Routes, Route } from "react-router-dom";
 import {useState, useEffect} from 'react'
+import { Routes, Route } from 'react-router-dom';
 import Navbar from "./Navbar";
 import GoalList from "./GoalList";
 import GoalForm from "./GoalForm";
-import ProgressForm from "./ProgressForm";
-import LandingPage from "./LandingPage";
 import LogInForm from "./LogInForm";
 import RegisterForm from "./RegisterForm";
+
 
 
 function App() {
     //display in app, 
     const[goalList, setgoalList] =useState([])
+    const [user, setUser] = useState(null);
+
 
 
     useEffect (() =>{
@@ -19,6 +23,25 @@ function App() {
         .then(res => res.json())
         .then(response => setgoalList(response))
     },[])
+
+    //stay logged in
+    useEffect(() => {
+    fetch('http://127.0.0.1:5555/check_session', {
+    credentials: 'include'
+    })
+    .then(res => {
+        if (res.ok) return res.json();
+        throw new Error();
+    })
+    .then(user => setUser(user))
+    .catch(() => setUser(null));
+}, []);
+
+//logout user
+function handleLogout() {
+    setUser(null); 
+    }
+
 
     //deletes the goals using iud
     function handleDelete(id) {
@@ -78,13 +101,14 @@ function App() {
 
     return (
     <>
-        <Navbar />
-        <RegisterForm/>
-        <LogInForm/>
-        {/* <LandingPage /> */}
-        <GoalList goalList={goalList} onDelete={handleDelete} onUpdate={handleUpdateGoal}/>
-        <GoalForm  />
-
+        <Navbar onLogout={handleLogout}/>
+        <Routes>
+            <Route path = '/' element={<LogInForm setUser={setUser}/>} />
+            <Route path = '/register' element={<RegisterForm/>} />
+            <Route path="/login" element={<LogInForm />} />
+            <Route path="/home" element={<GoalList goalList={goalList} onDelete={handleDelete} onUpdate={handleUpdateGoal}/>} />
+            <Route path = "/goalform" element={<GoalForm  />} />
+        </Routes>
     
     </>
     );

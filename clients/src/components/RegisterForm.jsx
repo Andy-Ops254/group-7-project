@@ -1,6 +1,7 @@
 import React from 'react'
 import {useState} from 'react'
 import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom'
 
 
 function RegisterForm() {
@@ -29,20 +30,20 @@ function RegisterForm() {
     })
     .then(res => {
         console.log("success",res.status)
-        if(res.status===200){
-            navigate('/login')
-            setRegister({
-        'name': '',
-        'email': ''
-    })
-        }
+        
         if(!res.ok) {
             throw new Error("Invalid login");
     }
     return res.json()
     })
     .then(response =>{
-    console.log('seccess' ,response)
+    console.log('seccess' ,response);
+            setRegister({
+        'name': '',
+        'email': ''
+    })
+        navigate('/login')
+
     
     })
     //my catch error
@@ -72,6 +73,9 @@ function RegisterForm() {
             />
             <button type='submit'>Create Account</button>
         </form>
+        <p>
+        Already have an Account? <Link to="/login">Log In here</Link>
+    </p>
     </div>
   )
 }
