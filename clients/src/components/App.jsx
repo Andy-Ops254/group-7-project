@@ -36,11 +36,9 @@ function App() {
 }, []);
 
 //logout user
-fetch('http://127.0.0.1:5555/logout', {
-method: 'DELETE',
-    credentials: 'include'
-})
-.then(() => setUser(null))
+function handleLogout() {
+    setUser(null); 
+    }
 
 
     //deletes the goals using iud
@@ -101,9 +99,9 @@ method: 'DELETE',
 
     return (
     <>
-        <Navbar />
+        <Navbar onLogout={handleLogout}/>
         <Routes>
-            <Route path = '/' element={<LogInForm/>} />
+            <Route path = '/' element={<LogInForm setUser={setUser}/>} />
             <Route path = '/register' element={<RegisterForm/>} />
             <Route path="/home" element={<GoalList goalList={goalList} onDelete={handleDelete} onUpdate={handleUpdateGoal}/>} />
             <Route path = "/goalform" element={<GoalForm  />} />

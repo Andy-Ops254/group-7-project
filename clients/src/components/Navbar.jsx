@@ -1,8 +1,25 @@
 import React from 'react'
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 
-function Navbar() {
+function Navbar({onLogout}) {
+    const navigate = useNavigate()
+
+    //event listener for the logout button
+    function handleLogout() {
+        console.log("'exit")
+        fetch("http://127.0.0.1:5555/logout", {
+        method: "DELETE",
+        credentials: "include"
+        })
+    .then(() => {
+        onLogout();    
+        navigate("/");        
+    })
+    .catch(err => {
+        console.error("Logout failed:", err);
+    });
+}
     return (
     <header>
         <div>
@@ -12,11 +29,11 @@ function Navbar() {
             <Link to="/">LogIn</Link>
             <Link to="/home">Home</Link>
             <Link to="/goalform">Create goal</Link>
-            <Link to="/logout">Log out</Link>
-
+            <button onClick={handleLogout}>Logout</button>
         </nav>
     </header>
     )
 }
+
 
 export default Navbar
