@@ -2,11 +2,9 @@ import React from "react";
 import { Link } from 'react-router-dom'
 
 
-
-
 function LandingPage() {
   return (
-    <div style={{ textAlign: "center", padding: "40px" }}>
+    <div className="container" style={{ textAlign: "center", padding: "40px" }}>
       <h1>Welcome to the Mental Wellness App</h1>
       <p>
         Track your goals, log progress, and get support from others on your
@@ -14,20 +12,14 @@ function LandingPage() {
       </p>
 
       <div style={{ marginTop: "20px" }}>
-        <Link to="/login">LOG IN
-          style={{
-            marginRight: "20px",
-            padding: "10px 20px",
-            backgroundColor: "#4CAF50",
-            color: "white",
-            borderRadius: "5px",
-          }}
+        <Link to="/login" className="primary" style={{ marginRight: "20px" }}>
+        LOG IN
         </Link>
           
-<Link></Link>
+        <Link to="/register" className="secondary">
+        SIGN UP
+        </Link>
 
-        
-        
       </div>
     </div>
   );
