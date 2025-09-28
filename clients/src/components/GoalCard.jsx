@@ -102,7 +102,6 @@ function GoalCard({title, description, created_at, target_date, id, onDelete, on
         </div>
         }
 
-
         { expanded &&
         <div className="progress-section">
             <ProgressForm goalId={id}/>
