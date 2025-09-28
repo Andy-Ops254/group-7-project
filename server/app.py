@@ -1,4 +1,4 @@
-from flask import Flask, make_response, jsonify, request
+from flask import Flask, make_response, jsonify, request, session
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_cors import CORS
@@ -8,14 +8,14 @@ from models import db, User, Goal, Progress, Supporter
 
 
 app = Flask(__name__)
-
+app.secret_key = 'super_secret_123'
 
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///mentalwellness.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 db.init_app(app)
 migrate = Migrate(app, db)
-CORS(app)
+CORS(app, supports_credentials=True)
 
 
 @app.route('/')
@@ -43,22 +43,73 @@ def get_user(id):
 def new_user():
     try:
         data = request.get_json()
+        name = data.get("name")
+        email =data.get("email")
+#queries if user exists
+        user_exists =User.query.filter_by(name=name, email=email).first()
+        if user_exists:
+            return make_response({"error": "User Already exists!!"})
+        # if user doesnt exists create an ew user
         new_user = User(
-            name = data.get("name"),
-            email =data.get("email"),
-            # joined_at =request.json.get("joined_at")
+            name = name,
+            email = email
         )
         db.session.add(new_user)
         db.session.commit()
-        response_data = new_user.to_dict()
+        response_data = new_user.to_dict(only=('name', 'email'))
         return make_response(response_data, 201)
 
 #raises an error when user is not created
     except ValueError as e:
             return make_response({"errors": [str(e)]}, 400)
 
+#login route, that checks if user and email exists
 
-        
+@app.route('/login', methods=["POST"])
+def log_in():
+    data = request.get_json()
+    name=data.get('name')
+    email =data.get('email')
+    
+    # print(name)
+    # print(email)
+    #condition to check if both have been inputed
+    if not name or not email:
+        return make_response({
+            'error':"Wrong user details, please retry"},
+            400
+            )
+    #this will check if thge user exists
+    user = User.query.filter_by(name=name, email=email).first()
+    # print(user)
+    #storing user in session
+    if user:
+        session['user_id']=user.id
+        return user.to_dict(only=('name', 'email')),200
+    else:
+        return{'error': 'user not found'}, 404
+    # if not user:
+    #     return make_response(
+    #         {'error': "User does not exist!"},
+    #         404
+    #     )
+    # return make_response(user.to_dict(only=('name', 'email')),200)
+
+    #check session endpoint- helps with logging out
+@app.route('/check_session', methods=['GET', 'DELETE'])
+def check_session():
+    user_id= session.get('user_id')
+    if user_id:
+        user= User.query.get(user_id)
+        return make_response(user.to_dict(only=('name', 'email')),200)
+    else:
+        return({"error": "Your are not logged in!"}, 401)
+#logout logic
+@app.route('/logout', methods=["DELETE"])
+def logout():
+    # clears the session
+    session.pop('user_id', None)
+    return {}, 204
         
 @app.route("/users/<int:id>", methods=['DELETE', 'PATCH'])
 def delete_user(id):
@@ -209,19 +260,23 @@ def progress_by_id(id):
                 {"error": "Progress doesn't exist!"},
                 404
             )
-
-    elif request.method=='GET':
-        if progress_id:
-            progress_dict = {
-                'status': progress_id.status,
-                'note' : progress_id.note
-            }
-            return make_response(progress_dict, 200)
-        else:
-            return make_response(
-                {"error": "Progress doesn't exist!"},
-                404
-            )
+@app.route('/goals/<int:id>/progress')
+def progress_id_goals(id):
+    progress = Progress.query.filter_by(goal_id=id).all()
+    print(progress)
+    if progress:
+        progress_dict = [{
+            'status': progress.status,
+            'note' : progress.note,
+            'date': progress.date,
+            'id':progress.id
+        } for progress in progress] #converting this into a object
+        return make_response(progress_dict, 200)
+    else:
+        return make_response(
+            [],
+            200
+        )
 
 
 @app.route('/support/<int:goal_id>', methods=['GET'])
