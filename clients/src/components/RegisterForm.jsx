@@ -30,20 +30,20 @@ function RegisterForm() {
     })
     .then(res => {
         console.log("success",res.status)
-        if(res.status===200){
-            navigate('/login')
-            setRegister({
-        'name': '',
-        'email': ''
-    })
-        }
+        
         if(!res.ok) {
             throw new Error("Invalid login");
     }
     return res.json()
     })
     .then(response =>{
-    console.log('seccess' ,response)
+    console.log('seccess' ,response);
+            setRegister({
+        'name': '',
+        'email': ''
+    })
+        navigate('/login')
+
     
     })
     //my catch error

@@ -1,6 +1,6 @@
 
 // import { Route } from "react-router";
-import { Routes, Route } from "react-router-dom";
+// import { Routes, Route } from "react-router-dom";
 import {useState, useEffect} from 'react'
 import { Routes, Route } from 'react-router-dom';
 import Navbar from "./Navbar";
@@ -105,6 +105,7 @@ function handleLogout() {
         <Routes>
             <Route path = '/' element={<LogInForm setUser={setUser}/>} />
             <Route path = '/register' element={<RegisterForm/>} />
+            <Route path="/login" element={<LogInForm />} />
             <Route path="/home" element={<GoalList goalList={goalList} onDelete={handleDelete} onUpdate={handleUpdateGoal}/>} />
             <Route path = "/goalform" element={<GoalForm  />} />
         </Routes>
