@@ -9,8 +9,6 @@ import GoalForm from "./GoalForm";
 import LogInForm from "./LogInForm";
 import RegisterForm from "./RegisterForm";
 
-
-
 function App() {
     //display in app, 
     const[goalList, setgoalList] =useState([])
