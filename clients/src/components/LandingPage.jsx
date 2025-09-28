@@ -25,6 +25,7 @@ function LandingPage() {
 
       </div>
     </div>
+    </div>
   );
 }
 
