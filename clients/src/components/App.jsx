@@ -8,6 +8,9 @@ import GoalList from "./GoalList";
 import GoalForm from "./GoalForm";
 import LogInForm from "./LogInForm";
 import RegisterForm from "./RegisterForm";
+import "../App.css";
+
+
 
 function App() {
     //display in app, 

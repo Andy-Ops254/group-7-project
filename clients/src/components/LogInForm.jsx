@@ -1,4 +1,3 @@
-
 import React from 'react'
 import { useNavigate } from 'react-router-dom';
 import {useState} from 'react'
@@ -49,13 +48,25 @@ function LogInForm() {
   }
 
   return (
-    <div style={{ textAlign: "center", marginTop: "40px" }}>
-      <h1>Welcome to the Mental Wellness App</h1>
+    <div
+    style={{
+        textAlign: "center",
+        marginTop: "40px",
+        padding: "30px",
+        maxWidth: "400px",
+        marginLeft: "auto",
+        marginRight: "auto",
+        border: "1px solid #ddd",
+        borderRadius: "10px",
+        backgroundColor: "#f9f9f9",
+      }}
+ >
+      <h1 style={{ color: "#6a4dad" }}>Welcome to the Mental Wellness App</h1>
       <p>
         Track your goals, log progress, and get support from others on your
         wellness journey.
       </p>
-      <h2>Log In</h2>
+      <h2 style={{ marginTop: "20px" }}>Log In</h2>
       <form onSubmit={handleSubmit}>
         <input
         name ="name"
@@ -63,8 +74,15 @@ function LogInForm() {
         placeholder="Name"
         value={logData.name}
         onChange ={handleChange}
-        style={{ display: "block", margin: "10px auto", padding: "8px" }}
-
+        style={{
+            display: "block",
+            margin: "10px auto",
+            padding: "10px",
+            width: "80%",
+            borderRadius: "5px",
+            border: "1px solid #ccc",
+          }}
+          required
         />
         {/*username input*/}
 
@@ -74,19 +92,39 @@ function LogInForm() {
         placeholder="Email"
         value={logData.email}
         onChange={handleChange}
-        style={{ display: "block", margin: "10px auto", padding: "8px" }}
+        style={{
+            display: "block",
+            margin: "10px auto",
+            padding: "10px",
+            width: "80%",
+            borderRadius: "5px",
+            border: "1px solid #ccc",
+          }}
+          required
+
 
         />
         {/*email input*/}
 
-        <button type="submit" style={{ padding: "8px 20px" }}>
+        <button type="submit" 
+        style={{
+            padding: "10px 20px",
+            marginTop: "15px",
+            backgroundColor: "#4CAF50",
+            color: "white",
+            border: "none",
+            borderRadius: "5px",
+            cursor: "pointer",
+          }}>
+
+        
             Log In</button>
         {/*submit button*/}
 
 
       </form>
-      <p>
-        Don't have an account? <Link to="/register">Register here</Link>
+      <p style={{ marginTop: "20px" }}>
+        Don't have an account? <Link to="/register" style={{ color: "#6a4dad", fontWeight: "bold" }}>Register here</Link>
       </p>
     </div>
   );

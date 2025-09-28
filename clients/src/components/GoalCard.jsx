@@ -44,7 +44,9 @@ function GoalCard({title, description, created_at, target_date, id, onDelete, on
         { editing &&
         <div className="goal-card edit">
             <h2 className="goal-quote">"Healing happens one step at a time"</h2>
-            <form onSubmit={(e) => {
+            <form 
+               className="goal-edit-form"
+                onSubmit={(e) => {
                 e.preventDefault()
                 onUpdate(id,{
                     title: e.target.title.value,
@@ -99,7 +101,6 @@ function GoalCard({title, description, created_at, target_date, id, onDelete, on
             </div>
         </div>
         }
-
 
         { expanded &&
         <div className="progress-section">

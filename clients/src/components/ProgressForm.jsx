@@ -52,13 +52,14 @@ function ProgressForm({goalId}) {
   <input
     type="text"
     name="note"
-    placeholder="Log your progress..."
+    placeholder="✨Log your progress..."
     value={progress.note}
     onChange={handleChange}
+    className="progress-input"
   />
 
   <p>Status:</p>
-
+  <div className="progress-status-options">
   <label>
     <input
       type="radio"
@@ -91,8 +92,11 @@ function ProgressForm({goalId}) {
     />
     In Progress
   </label>
+ </div>
 
-  <button type="submit">Add Progress</button>
+  <button type="submit" className="btn add-progress-btn">
+    Add Progress
+    </button>
 </form>
 
   );

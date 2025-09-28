@@ -4,6 +4,10 @@ import { Link } from 'react-router-dom'
 
 function LandingPage() {
   return (
+    <div className="landing-container">
+      <h1 className="landing-title">Welcome to the Mental Wellness App</h1>
+      <p className="landing-text">
+
 
     <div className="container" style={{ textAlign: "center", padding: "40px" }}>
       <h1>Welcome to the Mental Wellness App</h1>
@@ -14,6 +18,14 @@ function LandingPage() {
         wellness journey.
       </p>
 
+      <div className="landing-buttons">
+        <Link to="/login"className="primary-btn">
+        Log In
+        </Link>   
+        <Link to="/register" className="secondary-btn">
+        Sign Up
+        </Link>
+
       <div style={{ marginTop: "20px" }}>
         <Link to="/login" className="primary" style={{ marginRight: "20px" }}>
         LOG IN
@@ -22,6 +34,7 @@ function LandingPage() {
         <Link to="/register" className="secondary">
         SIGN UP
         </Link>
+
 
       </div>
     </div>
