@@ -38,13 +38,16 @@ function LogInForm() {
         console.log("Login success:", response);
         navigate("/home"); // redirect to home
         setLogData({ name: "", email: "" });
+      })
+      .catch((err) => {
+        console.error("❌ Login failed:", err.message);
       });
+
   }
 
-
-
   return (
-    <div>
+    <div style={{ textAlign: "center", marginTop: "40px" }}>
+      <h2>Log In</h2>
       <form onSubmit={handleSubmit}>
         <input
         name ="name"
@@ -52,6 +55,8 @@ function LogInForm() {
         placeholder="Name"
         value={logData.name}
         onChange ={handleChange}
+        style={{ display: "block", margin: "10px auto", padding: "8px" }}
+
         />
         {/*username input*/}
 
@@ -61,10 +66,13 @@ function LogInForm() {
         placeholder="Email"
         value={logData.email}
         onChange={handleChange}
+        style={{ display: "block", margin: "10px auto", padding: "8px" }}
+
         />
         {/*email input*/}
 
-        <button type="submit">Log In</button>
+        <button type="submit" style={{ padding: "8px 20px" }}>
+            Log In</button>
         {/*submit button*/}
 
 
