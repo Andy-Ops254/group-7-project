@@ -12,5 +12,5 @@ set -e
 # cd server
 
 # Run the Flask app with gunicorn
-exec gunicorn app:app --bind 0.0.0.0:$PORT
+python -m gunicorn server.app:app --bind 0.0.0.0:$PORT
 
