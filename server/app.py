@@ -1,13 +1,13 @@
-from flask import Flask, make_response, jsonify, request, session
+from flask import Flask, make_response, jsonify, request, send_from_directory
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_cors import CORS
 from datetime import datetime
-
 from models import db, User, Goal, Progress, Supporter
+import os
 
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='clients/build', static_url_path='')
 app.secret_key = 'super_secret_123'
 
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///mentalwellness.db"
@@ -17,6 +17,10 @@ db.init_app(app)
 migrate = Migrate(app, db)
 CORS(app, supports_credentials=True)
 
+
+@app.route('/')
+def serve():
+    return send_from_directory(app.static_folder, 'index.html')
 
 @app.route('/')
 def index():
