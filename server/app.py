@@ -24,9 +24,13 @@ CORS(app, supports_credentials=True)
 def serve():
     return send_from_directory(app.static_folder, 'index.html')
 
-@app.route('/')
-def index():
-    return "WELCOME TO MY WELLNESS APP"
+@app.errorhandler(404)
+def not_found(e):
+    return send_from_directory(app.static_folder, 'index.html')
+
+# @app.route('/')
+# def index():
+#     return "WELCOME TO MY WELLNESS APP"
 
 #User routes
 @app.route('/users', methods = ['GET'])
