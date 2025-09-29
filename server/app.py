@@ -8,7 +8,9 @@ import os
 
 
 app = Flask(__name__, static_folder='clients/build', static_url_path='')
-app.secret_key = 'super_secret_123'
+# app.secret_key = 'super_secret_123'
+app.secret_key = os.environ.get('SECRET_KEY', 'fallback_key')
+
 
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///mentalwellness.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
