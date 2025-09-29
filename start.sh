@@ -9,7 +9,7 @@ set -e
 
 
 # Change to server directory where app.py is located
-cd server
+# cd server
 
 # Run the Flask app with gunicorn
 exec gunicorn app:app --bind 0.0.0.0:$PORT
