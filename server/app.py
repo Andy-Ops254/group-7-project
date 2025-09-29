@@ -7,7 +7,7 @@ from models import db, User, Goal, Progress, Supporter
 import os
 
 
-app = Flask(__name__, static_folder='clients/build', static_url_path='')
+app = Flask(__name__, static_folder='clients/dist', static_url_path='')
 # app.secret_key = 'super_secret_123'
 app.secret_key = os.environ.get('SECRET_KEY', 'fallback_key')
 
