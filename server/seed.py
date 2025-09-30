@@ -1,7 +1,12 @@
 from app import app
 from models import db, User, Goal, Progress,Supporter
 from datetime import datetime
+from dotenv import load_dotenv
+load_dotenv ()
+import os
 with app.app_context():
+    
+
     
     db.create_all()
     print("Deleting data...")

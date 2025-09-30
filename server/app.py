@@ -3,16 +3,19 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_cors import CORS
 from datetime import datetime
-from server.models import db, User, Goal, Progress, Supporter
+from models import db, User, Goal, Progress, Supporter
 import os
+from dotenv import load_dotenv
+
+load_dotenv ()
 
 
-app = Flask(__name__, static_folder='clients/dist', static_url_path='')
+app = Flask(__name__, static_folder='../clients/dist', static_url_path='')
 # app.secret_key = 'super_secret_123'
 app.secret_key = os.environ.get('SECRET_KEY', 'fallback_key')
 
 
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///mentalwellness.db"
+app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URI")
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 db.init_app(app)
