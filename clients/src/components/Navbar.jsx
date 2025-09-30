@@ -8,7 +8,7 @@ function Navbar({onLogout}) {
     //event listener for the logout button
     function handleLogout() {
         console.log("'exit")
-        fetch("http://127.0.0.1:5555/logout", {
+        fetch("/logout", {
         method: "DELETE",
         credentials: "include"
         })

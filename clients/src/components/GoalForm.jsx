@@ -19,7 +19,7 @@ function GoalForm() {
     function handleSubmit(e) {
         console.log("Kimoda!")
         e.preventDefault()
-        fetch ('http://127.0.0.1:5555/goals',{
+        fetch ('/goals',{
             method: "POST",
             headers: {
                 "Content-Type" : "application/json"

@@ -21,7 +21,7 @@ function LogInForm() {
     function handleSubmit(e) {
     e.preventDefault(); // prevent page reload
 
-    fetch("http://127.0.0.1:5555/login", {
+    fetch("/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(logData),

@@ -22,7 +22,7 @@ function ProgressForm({goalId}) {
   //submit handles the fetch and clears forms
   function handleSubmit(e) {
     e.preventDefault()
-    fetch('http://127.0.0.1:5555/progress', {
+    fetch('/progress', {
       method : "POST",
       headers: {
         "Content-Type": "application/json"

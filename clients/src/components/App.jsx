@@ -20,14 +20,14 @@ function App() {
 
 
     useEffect (() =>{
-        fetch ('http://127.0.0.1:5555/goals')
+        fetch ('/goals')
         .then(res => res.json())
         .then(response => setgoalList(response))
     },[])
 
     //stay logged in
     useEffect(() => {
-    fetch('http://127.0.0.1:5555/check_session', {
+    fetch('/check_session', {
     credentials: 'include'
     })
     .then(res => {
@@ -47,7 +47,7 @@ function handleLogout() {
     //deletes the goals using iud
     function handleDelete(id) {
         console.log('Qali')
-        fetch(`http://127.0.0.1:5555/goals/${id}`,{
+        fetch(`/goals/${id}`,{
             method:'DELETE',
         })
         // .then (res => res.json())
@@ -71,7 +71,7 @@ function handleLogout() {
     
     function handleUpdateGoal(id, updatedData) {
         console.log(updatedData)
-    fetch(`http://127.0.0.1:5555/goals/${id}`, {
+    fetch(`/goals/${id}`, {
         method: 'PATCH', 
         headers: {
             'Content-Type': 'application/json',

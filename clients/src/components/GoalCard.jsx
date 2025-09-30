@@ -29,7 +29,7 @@ function GoalCard({title, description, created_at, target_date, id, onDelete, on
 
     function showProgress() {
         console.log("finya")
-        fetch(`http://127.0.0.1:5555/goals/${id}/progress`)
+        fetch(`/goals/${id}/progress`)
         .then(res => res.json())
         .then(data => {
             console.log(data)
