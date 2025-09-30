@@ -14,8 +14,7 @@ app = Flask(__name__, static_folder='../clients/dist', static_url_path='')
 # app.secret_key = 'super_secret_123'
 app.secret_key = os.getenv("SECRET_KEY", "fallback-secret")
 
-
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:///mentalwellness.db')
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URI', 'sqlite:///mentalwellness.db')
 print(app.config['SQLALCHEMY_DATABASE_URI'])
 print("Database URI:", app.config["SQLALCHEMY_DATABASE_URI"])
 
