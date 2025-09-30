@@ -1,4 +1,4 @@
-from flask import Flask, make_response, jsonify, request, send_from_directory
+from flask import Flask, make_response, jsonify, request, send_from_directory, session
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_cors import CORS
@@ -12,10 +12,14 @@ load_dotenv ()
 
 app = Flask(__name__, static_folder='../clients/dist', static_url_path='')
 # app.secret_key = 'super_secret_123'
-app.secret_key = os.environ.get('SECRET_KEY', 'fallback_key')
+app.secret_key = os.getenv("SECRET_KEY", "fallback-secret")
 
 
-app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URI")
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:///mentalwellness.db')
+print(app.config['SQLALCHEMY_DATABASE_URI'])
+print("Database URI:", app.config["SQLALCHEMY_DATABASE_URI"])
+
+
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 db.init_app(app)
@@ -42,7 +46,7 @@ def users_list():
     for user in User.query.all():
         user_dict = user.to_dict(only=('name', 'email'))
         user_list.append(user_dict)
-    return make_response(user_dict, 200)
+    return make_response(user_list, 200)
 
 @app.route('/users/<int:id>', methods=['GET'])
 def get_user(id):
@@ -232,8 +236,8 @@ def progress_list():
             date = date,
             note =data.get("note")
         )
-    db.session.add(new_progress)
-    db.session.commit()
+        db.session.add(new_progress)
+        db.session.commit()
     
     progress_dict=new_progress.to_dict(only=('goal_id', 'status', 'date'))
     return make_response(progress_dict, 201)

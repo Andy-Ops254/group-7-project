@@ -1,8 +1,8 @@
-"""initial migration
+"""Initial migration
 
-Revision ID: 3be3bf427bb0
+Revision ID: 123e5438c0f5
 Revises: 
-Create Date: 2025-09-23 18:11:58.701969
+Create Date: 2025-09-30 16:46:44.609775
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '3be3bf427bb0'
+revision = '123e5438c0f5'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -22,14 +22,14 @@ def upgrade():
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('name', sa.String(), nullable=False),
     sa.Column('email', sa.String(), nullable=True),
-    sa.Column('joined_at', sa.DateTime(), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=True),
+    sa.Column('joined_at', sa.DateTime(), server_default=sa.text('now()'), nullable=True),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('goals',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('title', sa.String(), nullable=False),
     sa.Column('description', sa.Text(), nullable=True),
-    sa.Column('created_at', sa.DateTime(), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=True),
+    sa.Column('created_at', sa.DateTime(), server_default=sa.text('now()'), nullable=True),
     sa.Column('target_date', sa.DateTime(), nullable=True),
     sa.Column('user_id', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
@@ -38,7 +38,7 @@ def upgrade():
     op.create_table('progress',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('goal_id', sa.Integer(), nullable=False),
-    sa.Column('date', sa.Date(), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=True),
+    sa.Column('date', sa.DateTime(), server_default=sa.text('now()'), nullable=True),
     sa.Column('status', sa.String(length=50), nullable=False),
     sa.Column('note', sa.Text(), nullable=True),
     sa.ForeignKeyConstraint(['goal_id'], ['goals.id'], ),
@@ -49,7 +49,7 @@ def upgrade():
     sa.Column('user_id', sa.Integer(), nullable=False),
     sa.Column('goal_id', sa.Integer(), nullable=False),
     sa.Column('message', sa.Text(), nullable=True),
-    sa.Column('created_at', sa.DateTime(), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=True),
+    sa.Column('created_at', sa.DateTime(), server_default=sa.text('now()'), nullable=True),
     sa.ForeignKeyConstraint(['goal_id'], ['goals.id'], ),
     sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
     sa.PrimaryKeyConstraint('id')
